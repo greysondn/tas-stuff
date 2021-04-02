@@ -243,7 +243,7 @@ class Plotter:
 
     # wait some number of frames.
     def wait(self, frames):
-        for i in range(frames):
+        for i in range(frames):                # pylint: disable=unused-variable
             self.bufferInstruction(0, 0)
     
     # click the lmb for 7 frames, then release
@@ -322,6 +322,7 @@ class Plotter:
             
             # burn some time
             print("")
+            #pylint: disable=unused-variable
             ignored = input("< Input enter to continue script. >")
     
     # draws a 1 bit mask's black pixels to the screen
