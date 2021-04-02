@@ -1,0 +1,11 @@
+# constants for Mario Paint
+
+SCREEN_MIN_X = -16
+SCREEN_MAX_X = 256
+SCREEN_MIN_Y =   8
+SCREEN_MAX_Y = 215
+
+CANVAS_MIN_X =   4
+CANVAS_MAX_X = 251
+CANVAS_MIN_Y =  28
+CANVAS_MAX_Y = 195
