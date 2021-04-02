@@ -1,5 +1,18 @@
 # mario-paint-plotter
-A simple scrap of python to do image plotting in Mario Paint on the SNES via Bizhawk's TASStudio
+A simple scrap of python to do image plotting in Mario Paint on the SNES via
+Bizhawk's TASStudio
+
+# Original source
+
+Was just going to be chucked into github and let to die. That's here:
+
+https://github.com/greysondn/mario-paint-plotter
+
+Specifically at commit d3276f1:
+
+https://github.com/greysondn/mario-paint-plotter/tree/d3276f15f4b042d36234b4b9e839c2d44bf69206
+
+This version is now the working/edited version. (You can tell I didn't plan this at all, can't you?)
 
 # Environment
 ```
