@@ -48,6 +48,11 @@ class Vertex():
         
         return end, self.cost
 
+class Graph():
+    # very barebones graph
+    def __init__(self):
+        self.contents = []
+
 class Node2D():
     """
     A single location in the search graph.

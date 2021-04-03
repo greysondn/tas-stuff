@@ -4,6 +4,7 @@ import unittest
 import tasstuff.any.search as search
 
 class test_Node(unittest.TestCase):
+
     def test_constructor_default(self):
         tst  = search.Node()
 
@@ -52,3 +53,10 @@ class test_Vertex(unittest.TestCase):
 
         # error
         self.assertRaises(ValueError, swp.traverse, err)
+
+class test_Graph(unittest.TestCase):
+
+    def test_constructor_default(self):
+        tst = search.Graph()
+
+        self.assertEquals(tst.contents, [])
