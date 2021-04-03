@@ -1,4 +1,7 @@
 class Node():
+    """
+    A single location in the search graph.
+    """    
     def __init__(self):
         self.x       = -1
         self.y       = -1
@@ -10,6 +13,9 @@ class Node():
         self.south   = None
 
 class Graph():
+    """
+    A basic search graph.
+    """    
     def __init__(self, width, height):
         self.contents = []
         
