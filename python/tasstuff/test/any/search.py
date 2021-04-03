@@ -60,3 +60,16 @@ class test_Graph(unittest.TestCase):
         tst = search.Graph()
 
         self.assertEquals(tst.contents, [])
+
+class test_Node2D(unittest.TestCase):
+
+    def test_constructor_default(self):
+        tst = search.Node2D()
+
+        # test parent
+        self.assertEqual([], tst.flags)
+        self.assertEqual([], tst.neighbors)
+
+        # test new properties
+        self.assertEqual(-1, tst.x)
+        self.assertEqual(-1, tst.y)

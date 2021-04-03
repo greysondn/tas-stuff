@@ -53,16 +53,17 @@ class Graph():
     def __init__(self):
         self.contents = []
 
-class Node2D():
+class Node2D(Node):
     """
     A single location in the search graph.
     """
     def __init__(self):
+        # parent constructor
+        super().__init__()
+
+        # extra properties
         self.x         = -1
         self.y         = -1
-        self.target    = False
-        self.checked   = False
-        self.neighbors = []
 
 class Graph2D():
     """
