@@ -1,24 +1,90 @@
+# constants
+FLAG_TARGET  = "flag.target"
+FLAG_CHECKED = "flag.checked"
+
+# "and all the rest"
+class Node():
+    """
+    A single location in a search graph
+    """
+    def __init__(self):
+        self.flags     = []
+        self.neighbors = []
+
+class Vertex():
+    """
+    A single connection in a search graph
+    """
+    def __init__(self, left, right, cost=1.0):
+        """Creates a vertex.
+
+        "Left" and "right" are arbitrary names here. They don't indicate
+        anything meaningful, they just give us a consistent way to tell one Node
+        from the other in a vertex.
+
+        Args:
+            left (Node):
+                One of the two Nodes to connect. Defaults to None.
+            right (Node):
+                One of the two Nodes to connect. Defaults to None.
+            cost (float, optional):
+                How much it "costs" to traverse this vertex. Typically this is
+                the actual distance between nodes, or the resource cost to move
+                between them. Defaults to 1.0.
+        """
+        self.left  = left
+        self.right = right
+        self.cost  = cost
+    
+    def traverse(self, start):
+        end = None
+        
+        if (start is self.left):
+            end = self.right
+        elif (start is self.right):
+            end = self.left
+        else:
+            raise ValueError("No match for start in vertex!")
+        
+        return end, self.cost
+
 class Node2D():
     """
     A single location in the search graph.
     """
     def __init__(self):
-        self.x       = -1
-        self.y       = -1
-        self.target  = False
-        self.checked = False
-        self.north   = None
-        self.east    = None
-        self.west    = None
-        self.south   = None
+        self.x         = -1
+        self.y         = -1
+        self.target    = False
+        self.checked   = False
+        self.neighbors = []
 
 class Graph2D():
     """
     A basic search graph.
     """
-    def __init__(self, width, height):
+    def __init__(self, width, height, cardinalNeighbors=True, 
+                 diagonalNeighbors=False):
+        """Create a simple 2D search graph.
+
+        The operating assumption is that this maps to some kind of 2D grid map -
+        tiles, pixels, something like that.
+
+        Args:
+            width (uint):
+                width in nodes to make the graph
+            height (uint):
+                height in nodes to make the graph
+            cardinalNeighbors (bool, optional):
+                Whether to link the north, south, east, and west node to each
+                other. Defaults to True.
+            diagonalNeighbors (bool, optional):
+                Whether to link the northeast, northwest, southeast, and
+                southwest nodes to each other. Defaults to False.
+        """        
         self.contents = []
         
+        # build the basic graph first
         for x in range(width):
             xSwp = []
             for y in range(height):
