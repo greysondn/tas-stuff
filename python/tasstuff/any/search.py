@@ -1,4 +1,4 @@
-class Node():
+class Node2D():
     """
     A single location in the search graph.
     """    
@@ -12,7 +12,7 @@ class Node():
         self.west    = None
         self.south   = None
 
-class Graph():
+class Graph2D():
     """
     A basic search graph.
     """    
