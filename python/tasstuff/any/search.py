@@ -11,6 +11,15 @@ class Node():
         self.flags     = []
         self.neighbors = []
 
+    def addNeighbor(self, neighbor, cost=1.0, mirror=True):
+        swp = Vertex(self, neighbor, float(cost))
+        self.neighbors.append(swp)
+
+        if (mirror):
+            neighbor.addNeighbor(self, cost, False)
+    
+
+
 class Vertex():
     """
     A single connection in a search graph
@@ -65,7 +74,7 @@ class Node2D(Node):
         self.x         = -1
         self.y         = -1
 
-class Graph2D():
+class Graph2D(Graph):
     """
     A basic search graph.
     """
@@ -88,7 +97,8 @@ class Graph2D():
                 Whether to link the northeast, northwest, southeast, and
                 southwest nodes to each other. Defaults to False.
         """        
-        self.contents = []
+        # parent constructor first
+        super().__init__()
         
         # build the basic graph first
         for x in range(width):
@@ -97,10 +107,19 @@ class Graph2D():
                 xSwp.append(Node())
             self.contents.append(xSwp)
         
+        # now we go over it and give it some magic of a sort
         for x in range(width):
             for y in range(height):
+                # make nodes aware of their own position
                 self.contents[x][y].x = x
                 self.contents[x][y].y = y
+
+                # handle cardinal neighbors
+                if (cardinalNeighbors):
+                    # west
+                    if (x > 0):
+                       self.contents[x][y].addNeighbor(self.contents[x-1],y)
+
         
         for x in range(1, width):
             for y in range(height):
