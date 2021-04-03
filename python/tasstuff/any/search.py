@@ -1,7 +1,7 @@
 class Node2D():
     """
     A single location in the search graph.
-    """    
+    """
     def __init__(self):
         self.x       = -1
         self.y       = -1
@@ -15,7 +15,7 @@ class Node2D():
 class Graph2D():
     """
     A basic search graph.
-    """    
+    """
     def __init__(self, width, height):
         self.contents = []
         
