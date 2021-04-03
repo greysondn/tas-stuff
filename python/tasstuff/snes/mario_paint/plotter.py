@@ -1,5 +1,5 @@
 import math
-import mpaint as mp
+import tasstuff.snes.mario_paint.constants as mp
 from PIL import Image
 
 # My column width is set at 80, if you'd like to display this without wrapping.
