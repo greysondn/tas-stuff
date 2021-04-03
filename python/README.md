@@ -12,6 +12,11 @@ Conventions
 
 That is to say, conventions used specific to this code and its organization.
 
+Execution
+---------
+
+Via `python -m path.to.module` in the same folder as this readme file. Failure to do so may result in broken imports.
+
 Namespaces
 ----------
 The hiearchial tree is a bit deeper than suggested for Python classes
