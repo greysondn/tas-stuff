@@ -139,6 +139,46 @@ class test_Edge(unittest.TestCase):
         # error
         self.assertRaises(ValueError, swp.traverse, err)
 
+class test_path(unittest.TestCase):
+
+    def test_constructor_default(self):
+        node = search.Node()
+        tst  = search.Path(node)
+
+        self.assertEquals(tst.cost, 0)
+        self.assertIs(tst.start, node)
+        self.assertIs(tst.end, node)
+        self.assertEquals(len(tst.nodes), 1)
+        self.assertIs(tst.nodes[0], node)
+        self.assertFalse(tst.failed)
+
+    def test_moveto(self):
+        start = search.Node()
+        end   = search.Node()
+        nope  = search.Node()
+
+        start.addNeighbor(end, 2.3)
+
+        tst = search.Path(start)
+
+        self.assertTrue(tst.moveto(end))
+
+        self.assertEquals(tst.cost, 2.3)
+        self.assertEquals(len(tst.nodes), 2)
+        self.assertIs(tst.end, end)
+        self.assertIs(tst.start, start)
+        self.assertFalse(tst.failed)
+
+        self.assertFalse(tst.moveto(nope))
+
+        self.assertEquals(tst.cost, 2.3)
+        self.assertEquals(len(tst.nodes), 2)
+        self.assertIs(tst.end, end)
+        self.assertIs(tst.start, start)
+        self.assertTrue(tst.failed)
+
+
+
 class test_Graph(unittest.TestCase):
 
     def test_constructor_default(self):

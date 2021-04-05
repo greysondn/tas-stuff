@@ -10,6 +10,7 @@ class Node():
     def __init__(self):
         self.flags = []
         self.edges = []
+        self.cost  = []
 
     def addNeighbor(self, neighbor, cost=1.0, mirror=True):
         swp = Edge(self, neighbor, float(cost))
@@ -92,6 +93,31 @@ class Edge():
             raise ValueError("No match for start in edge!")
         
         return end, self.cost
+
+class Path():
+    # represents a series of nodes that are connected, start to end
+    def __init__(self, start):
+        self.cost   = 0
+        self.start  = start
+        self.end    = start
+        self.nodes  = [start]
+        self.failed = False
+    
+    def moveto(self, node):
+        if (not self.failed):
+            if (self.nodes[-1].hasNeighbor(node)):
+                # has link to next
+                self.cost = self.cost + self.end.getConnectingEdge(node).cost
+                self.nodes.append(node)
+                self.end  = node
+                
+            else:
+                # does not have link to next
+                self.failed = True
+        
+        return not self.failed
+
+
 
 class Graph():
     # very barebones graph
