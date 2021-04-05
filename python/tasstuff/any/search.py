@@ -17,6 +17,25 @@ class Node():
 
         if (mirror):
             neighbor.addNeighbor(self, cost, False)
+    
+    def hasNeighbor(self, neighbor):
+        ret = False
+
+        for edge in self.neighbors:
+            if (edge.traverse(self)[0] is neighbor):
+                ret = True
+        
+        return ret
+
+    def getConnectingEdge(self, neighbor):
+        ret = None
+        
+        for edge in self.neighbors:
+            if (edge.traverse()[0] is neighbor):
+                ret = edge
+
+        return ret
+
 
     
 class Edge():
