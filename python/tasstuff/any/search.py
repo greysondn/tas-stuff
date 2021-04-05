@@ -17,9 +17,8 @@ class Node():
 
         if (mirror):
             neighbor.addNeighbor(self, cost, False)
+
     
-
-
 class Vertex():
     """
     A single connection in a search graph
@@ -76,7 +75,7 @@ class Node2D(Node):
 
 class Graph2D(Graph):
     """
-    A basic search graph.
+    A basic search graph. Has some extension to help with 2 dimensional work.
     """
     def __init__(self, width, height, cardinalNeighbors=True, 
                  diagonalNeighbors=False):
@@ -99,53 +98,89 @@ class Graph2D(Graph):
         """        
         # parent constructor first
         super().__init__()
-        
+
+        # extra properties related to being a 2d map
+        self.width  = width
+        self.height = height
+
+        self.grid = [] # the contents laid out in a coordinate grid
+
         # build the basic graph first
         for x in range(width):
             xSwp = []
             for y in range(height):
-                xSwp.append(Node())
-            self.contents.append(xSwp)
-        
-        # now we go over it and give it some magic of a sort
-        for x in range(width):
-            for y in range(height):
-                # make nodes aware of their own position
-                self.contents[x][y].x = x
-                self.contents[x][y].y = y
+                # need to work with the node just a bit as we add it
+                nSwp = Node()
 
-                # handle cardinal neighbors
-                if (cardinalNeighbors):
-                    # west
-                    if (x > 0):
-                       self.contents[x][y].addNeighbor(self.contents[x-1],y)
+                # make node aware of its own position
+                nSwp.x = x
+                nSwp.y = y
 
-        
-        for x in range(1, width):
-            for y in range(height):
-                self.contents[x][y].west = self.contents[x-1][y]
-        
-        for x in range(width-1):
-            for y in range(height):
-                self.contents[x][y].east = self.contents[x+1][y]
-                
-        for y in range(1, height):
-            for x in range(width):
-                self.contents[x][y].north = self.contents[x][y-1]
-                
-        for y in range(height - 1):
-            for x in range(width):
-                self.contents[x][y].south = self.contents[x][y+1]
+                # add node to row
+                xSwp.append(nSwp)
+
+                # add node to base contents
+                self.contents.append(nSwp)
+
+            # add row to graph
+            self.grid.append(xSwp)
+
+        # connect neighbors
+        if (cardinalNeighbors):
+            self.connectCardinals()
+
+        if (diagonalNeighbors):
+            self.connectDiagonals()
+
+    def connectCardinals(self):
+        """
+        Connect nodes in this graph to their cardinal neighbors. North, south,
+        east, and west.
+        """
+        for x in range (self.width):
+            for y in range (self.height):
+                # west
+                if (x > 0):
+                    self.grid[x][y].addNeighbor(self.grid[x-1][y])
+                # north
+                if (y > 0):
+                    self.grid[x][y].addNeighbor(self.grid[x][y-1])
+                # east
+                if (x < width - 1):
+                    self.grid[x][y].addNeighbor(self.grid[x+1][y])
+                # south
+                if (y < height - 1):
+                    self.grid[x][y].addNeighbor(self.grid[x][y+1])
     
+    def connectDiagonals(self):
+        """
+        Connect nodes in this graph to their diagonal neighbors. Northeast,
+        northwest, southeast, southwest.
+        """
+        for x in range (self.width):
+            for y in range (self.height):
+                # northwest
+                if ((x > 0) and (y > 0)):
+                    self.grid[x][y].addNeighbor(self.grid[x-1][y-1])
+                # northeast
+                if ((x < width - 1) and (y > 0)):
+                    self.grid[x][y].addNeighbor(self.grid[x+1][y-1])
+                # southwest
+                if ((x > 0) and (y < height - 1)):
+                    self.grid[x][y].addNeighbor(self.grid[x-1][y+1])
+                # southeast
+                if ((x < width - 1) and (y < height - 1)):
+                    self.grid[x][y].addNeighbor(self.grid[x+1][y+1])
+
     def resetSearch(self):
-        for column in self.contents:
-            for cell in column:
+        for row in self.grid:
+            for cell in row:
                 cell.checked = False
     
     def findClosestTargetTo(self, x, y, unsetTarget=True):
         self.resetSearch()
     
-        searchList = [self.contents[int(x)][int(y)]]
+        searchList = [self.grid[int(x)][int(y)]]
         found    = False
         retX     = 0
         retY     = 0
