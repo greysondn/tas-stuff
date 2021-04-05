@@ -60,6 +60,41 @@ class test_Node(unittest.TestCase):
 
         self.assertIs(tst.getConnectingEdge(nbr), shouldBe)
         self.assertIs(tst.getConnectingEdge(nop), None)
+    
+    def test_addFlag(self):
+        tst = search.Node()
+
+        self.assertEquals(len(tst.flags), 0)
+        
+        tst.addFlag("test")
+        self.assertEquals(len(tst.flags), 1)
+        self.assertEquals(tst.flags[0], "test")
+
+        tst.addFlag("test")
+        self.assertEquals(len(tst.flags), 1)
+
+    def test_hasFlag(self):
+        tst = search.Node()
+
+        self.assertFalse(tst.hasFlag("test"))
+        tst.addFlag("test")
+        self.assertTrue(tst.hasFlag("test"))
+
+    def test_removeFlag(self):
+        tst = search.Node()
+
+        tst.addFlag("test")
+        tst.removeFlag("test")
+        self.assertFalse(tst.hasFlag("test"))
+
+    def test_resetFlags(self):
+        tst = search.Node()
+
+        tst.addFlag("test")
+        tst.resetFlags()
+        self.assertFalse(tst.hasFlag("test"))
+
+
 
 class test_Edge(unittest.TestCase):
 
@@ -162,3 +197,23 @@ class testGraph2D(unittest.TestCase):
         self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[2][0]))
         self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[2][2]))
         # I got bored of writing, call me when it breaks.
+
+    def test_constructor_diagonals(self):
+        tst = search.Graph2D(3, 3, True, True)
+
+        # we'll just skip straight to the short test for this
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[0][1]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[1][0]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[1][2]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[2][1]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[0][0]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[0][2]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[1][1]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[2][0]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[2][2]))
+
+    def test_constructor_sizes(self):
+        tst=search.Graph2D(1,2)
+
+        self.assertEquals(len(tst.grid), 1)
+        self.assertEquals(len(tst.grid[0]), 2)

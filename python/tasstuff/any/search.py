@@ -35,7 +35,25 @@ class Node():
                 ret = edge
 
         return ret
+    
+    def addFlag(self, flag):
+        if (flag not in self.flags):
+            self.flags.append(flag)
+    
+    def hasFlag(self, flag):
+        ret = False
 
+        if (flag in self.flags):
+            ret = True
+
+        return ret
+
+    def removeFlag(self, flag):
+        if (self.hasFlag(flag)):
+            self.flags.remove(flag)
+
+    def resetFlags(self):
+        self.flags = []
 
     
 class Edge():
