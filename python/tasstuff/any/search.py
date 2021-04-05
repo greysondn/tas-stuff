@@ -31,7 +31,7 @@ class Node():
         ret = None
         
         for edge in self.edges:
-            if (edge.traverse()[0] is neighbor):
+            if (edge.traverse(self)[0] is neighbor):
                 ret = edge
 
         return ret

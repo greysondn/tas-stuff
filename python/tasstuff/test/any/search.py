@@ -48,6 +48,18 @@ class test_Node(unittest.TestCase):
         
         self.assertTrue(tst.hasNeighbor(nbr))
         self.assertFalse(tst.hasNeighbor(nop))
+    
+    def test_getConnectingEdge(self):
+        tst = search.Node()
+        nbr = search.Node()
+        nop = search.Node()
+
+        tst.addNeighbor(nbr, 1.0, False)
+
+        shouldBe = tst.edges[0]
+
+        self.assertIs(tst.getConnectingEdge(nbr), shouldBe)
+        self.assertIs(tst.getConnectingEdge(nop), None)
 
 class test_Edge(unittest.TestCase):
 
