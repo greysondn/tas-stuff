@@ -8,12 +8,12 @@ class Node():
     A single location in a search graph
     """
     def __init__(self):
-        self.flags     = []
-        self.neighbors = []
+        self.flags = []
+        self.edges = []
 
     def addNeighbor(self, neighbor, cost=1.0, mirror=True):
         swp = Edge(self, neighbor, float(cost))
-        self.neighbors.append(swp)
+        self.edges.append(swp)
 
         if (mirror):
             neighbor.addNeighbor(self, cost, False)
@@ -21,7 +21,7 @@ class Node():
     def hasNeighbor(self, neighbor):
         ret = False
 
-        for edge in self.neighbors:
+        for edge in self.edges:
             if (edge.traverse(self)[0] is neighbor):
                 ret = True
         
@@ -30,7 +30,7 @@ class Node():
     def getConnectingEdge(self, neighbor):
         ret = None
         
-        for edge in self.neighbors:
+        for edge in self.edges:
             if (edge.traverse()[0] is neighbor):
                 ret = edge
 

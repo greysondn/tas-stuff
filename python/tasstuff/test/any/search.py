@@ -20,24 +20,24 @@ class test_Node(unittest.TestCase):
         # no mirror
         tst.addNeighbor(nxt,4.2,False)
 
-        self.assertIs(tst.neighbors[0].left, tst)
-        self.assertIs(tst.neighbors[0].right, nxt)
-        self.assertEquals(tst.neighbors[0].cost, 4.2)
-        self.assertEquals(len(tst.neighbors), 1)
-        self.assertEquals(len(nxt.neighbors), 0)
+        self.assertIs(tst.edges[0].left, tst)
+        self.assertIs(tst.edges[0].right, nxt)
+        self.assertEquals(tst.edges[0].cost, 4.2)
+        self.assertEquals(len(tst.edges), 1)
+        self.assertEquals(len(nxt.edges), 0)
 
         # mirror now
         tst.addNeighbor(mir)
 
-        self.assertIs(tst.neighbors[1].left, tst)
-        self.assertIs(tst.neighbors[1].right, mir)
-        self.assertEquals(tst.neighbors[1].cost, 1.0)
-        self.assertEquals(len(tst.neighbors), 2)
+        self.assertIs(tst.edges[1].left, tst)
+        self.assertIs(tst.edges[1].right, mir)
+        self.assertEquals(tst.edges[1].cost, 1.0)
+        self.assertEquals(len(tst.edges), 2)
 
-        self.assertIs(mir.neighbors[0].left, mir)
-        self.assertIs(mir.neighbors[0].right, tst)
-        self.assertEquals(mir.neighbors[0].cost, 1.0)
-        self.assertEquals(len(mir.neighbors), 1)
+        self.assertIs(mir.edges[0].left, mir)
+        self.assertIs(mir.edges[0].right, tst)
+        self.assertEquals(mir.edges[0].cost, 1.0)
+        self.assertEquals(len(mir.edges), 1)
 
 class test_Edge(unittest.TestCase):
 
@@ -96,7 +96,7 @@ class test_Node2D(unittest.TestCase):
 
         # test parent
         self.assertEqual([], tst.flags)
-        self.assertEqual([], tst.neighbors)
+        self.assertEqual([], tst.edges)
 
         # test new properties
         self.assertEqual(-1, tst.x)
