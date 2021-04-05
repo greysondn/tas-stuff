@@ -9,7 +9,7 @@ class test_Node(unittest.TestCase):
         tst  = search.Node()
 
         self.assertEqual([], tst.flags)
-        self.assertEqual([], tst.neighbors)
+        self.assertEqual([], tst.edges)
 
     def test_addNeighbor(self):
         tst = search.Node()
