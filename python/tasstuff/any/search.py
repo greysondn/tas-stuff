@@ -10,7 +10,7 @@ class Node():
     def __init__(self):
         self.flags = []
         self.edges = []
-        self.cost  = []
+        self.cost  = 0
 
     def addNeighbor(self, neighbor, cost=1.0, mirror=True):
         swp = Edge(self, neighbor, float(cost))
@@ -122,6 +122,61 @@ class Graph():
     def __init__(self):
         self.contents = []
 
+    def resetSearch(self):
+        for node in self.contents:
+            node.removeFlag("___checked")
+            node.cost = float("inf")
+
+    def findClosestFlaggedTo(self, flag, node):
+        ret = None
+
+        self.resetSearch()
+
+        if (node in self.contents):
+            stopSearching = False
+            
+            node.cost = 0
+            toSearch = [node]
+
+            while (not stopSearching):
+                    
+                # get cheapest from the toSearch stack
+                swp = toSearch[0]
+
+                for node in toSearch:
+                    if node.cost < swp.cost:
+                        swp = node
+                
+                toSearch.remove(swp)
+
+                if not(swp.hasFlag("___checked")):
+                    # peek in on the neighbors
+                    for edge in swp.edges:
+                        # update costs
+                        costGuess = swp.cost + edge.cost
+                        nxt = edge.traverse(swp)[0]
+                        if (nxt.cost > costGuess):
+                            nxt.cost = costGuess
+                
+                        # add any unchecked neighbors to the search array
+                        if (not nxt.hasFlag("___checked")):
+                            toSearch.append(nxt)
+                    
+                    # give swap the checked flag so it won't be checked twice
+                    swp.addFlag("___checked")
+
+                # end conditions
+                if (swp.hasFlag(flag)):
+                    # found a target
+                    stopSearching = True
+                    ret = swp
+                elif (0 == len(toSearch)):
+                    # no more connections to search
+                    stopSearching = True
+                    ret = None
+
+        return ret 
+
 class Node2D(Node):
     """
     A single location in the search graph.
@@ -232,60 +287,3 @@ class Graph2D(Graph):
                 # southeast
                 if ((x < self.width - 1) and (y < self.height - 1)):
                     self.grid[x][y].addNeighbor(self.grid[x+1][y+1])
-
-    def resetSearch(self):
-        for row in self.grid:
-            for cell in row:
-                cell.checked = False
-    
-    def findClosestTargetTo(self, x, y, unsetTarget=True):
-        self.resetSearch()
-    
-        searchList = [self.grid[int(x)][int(y)]]
-        found    = False
-        retX     = 0
-        retY     = 0
-        
-        continueSearching = True
-        
-        #  the actual search over the mesh
-        while (continueSearching):
-            # get the first node off the searchlist, check it.
-            swp = searchList.pop(0)
-            
-            if (not swp.checked):
-                swp.checked = True
-                
-                if (swp.target):
-                    # found a target
-                    found = True
-                    retX  = swp.x
-                    retY  = swp.y
-                    
-                    if (unsetTarget):
-                        swp.target = False
-                else:
-                    # didn't find a target
-                    # no issue, just add the neighbors to the search list
-                    # the order they're added actually does matter a little
-                    # slightly influences the direction we're more likely to
-                    # move in which accrues more and more over long distances
-                    if ((swp.north is not None) and (not swp.north.checked)):
-                        searchList.append(swp.north)
-                    if ((swp.west is not None) and (not swp.west.checked)):
-                        searchList.append(swp.west)
-                    if ((swp.east is not None) and (not swp.east.checked)):
-                        searchList.append(swp.east)
-                    if ((swp.south is not None) and (not swp.south.checked)):
-                        searchList.append(swp.south)
-            
-            # loop halt conditions
-            if (found):
-                continueSearching = False
-            elif (0 == len(searchList)):
-                continueSearching = False
-            else:
-                continueSearching = True
-        
-        # return
-        return (found, retX, retY)

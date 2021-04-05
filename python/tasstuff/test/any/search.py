@@ -10,6 +10,7 @@ class test_Node(unittest.TestCase):
 
         self.assertEqual([], tst.flags)
         self.assertEqual([], tst.edges)
+        self.assertEqual(0,  tst.cost)
 
     def test_addNeighbor(self):
         tst = search.Node()
@@ -181,10 +182,106 @@ class test_path(unittest.TestCase):
 
 class test_Graph(unittest.TestCase):
 
+    def build_common_graph(self):
+        """Builds a graph I use for multiple tests.
+
+        The graph forms a triangular shape, such that:
+          A
+         B C
+        D E F
+
+        And costs:
+        A <-> B = 1
+        A <-> C = 2
+        B <-> C = 3
+        B <-> D = 5
+        B <-> E = 3
+        C <-> F = 1
+        D <-> E = 1
+        E <-> F = 2
+
+        There's no significance to the costs chosen.
+
+        Shortest routes (defined as lowest cost, fewest nodes)
+         S | E | Cost | Route
+        ---+---+------+------------------
+         A | A |    2 | A, B, A
+         A | B |    1 | A, B
+         A | C |    2 | A, C
+         A | D |    4 | A, C, E, D
+         A | E |    3 | A, C, E
+         A | F |    3 | A, C, F
+         B | A |    1 | B, A
+         B | B |    2 | B, A, B
+         B | C |    3 | B, C
+         B | D |    4 | B, E, D
+         B | E |    3 | B, E
+         B | F |    4 | B, C, F
+         ...
+
+        Shortest route visiting all points exactly once:
+         S | E | Cost | Route
+        ---+---+------+------------------
+         A | B |   11 | A, C, F, E, D, B
+        ...
+
+
+        """
+        ret =   search.Graph()
+
+        nodeA = search.Node()
+        nodeB = search.Node()
+        nodeC = search.Node()
+        nodeD = search.Node()
+        nodeE = search.Node()
+        nodeF = search.Node()
+
+        nodeA.addNeighbor(nodeB, 1)
+        nodeA.addNeighbor(nodeC, 2)
+        nodeB.addNeighbor(nodeC, 3)
+        nodeB.addNeighbor(nodeD, 5)
+        nodeB.addNeighbor(nodeE, 3)
+        nodeC.addNeighbor(nodeF, 1)
+        nodeD.addNeighbor(nodeE, 1)
+        nodeE.addNeighbor(nodeF, 2)
+
+        ret.contents.append(nodeA)
+        ret.contents.append(nodeB)
+        ret.contents.append(nodeC)
+        ret.contents.append(nodeD)
+        ret.contents.append(nodeE)
+        ret.contents.append(nodeF)
+
+        return ret
+
     def test_constructor_default(self):
         tst = search.Graph()
 
         self.assertEquals(tst.contents, [])
+
+    def test_findClosestFlaggedTo(self):
+        tst = self.build_common_graph()
+
+        nodeA = tst.contents[0]
+        nodeB = tst.contents[1]
+        nodeC = tst.contents[2]
+        nodeD = tst.contents[3]
+        nodeE = tst.contents[4]
+        nodeF = tst.contents[5]
+
+        # A, D, and F are corners
+
+        # A
+        # Dist F < Dist D
+        nodeD.addFlag("test")
+        nodeF.addFlag("test")
+        chk = tst.findClosestFlaggedTo("test", nodeA)
+        self.assertIs(nodeF, chk)
+
+        # deliberately impossible
+        chk = tst.findClosestFlaggedTo("___impossible", nodeA)
+        self.assertIs(None, chk)
+
 
 class test_Node2D(unittest.TestCase):
 
