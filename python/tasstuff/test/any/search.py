@@ -39,15 +39,13 @@ class test_Node(unittest.TestCase):
         self.assertEquals(mir.neighbors[0].cost, 1.0)
         self.assertEquals(len(mir.neighbors), 1)
 
-
-
-class test_Vertex(unittest.TestCase):
+class test_Edge(unittest.TestCase):
 
     def test_constructor_default(self):
         l = search.Node()
         r = search.Node()
         
-        tst = search.Vertex(l, r)
+        tst = search.Edge(l, r)
 
         self.assertIs(tst.left, l)
         self.assertIs(tst.right, r)
@@ -57,7 +55,7 @@ class test_Vertex(unittest.TestCase):
         l = search.Node()
         r = search.Node()
         
-        tst = search.Vertex(l, r, 1.0)
+        tst = search.Edge(l, r, 1.0)
 
         self.assertIs(tst.left, l)
         self.assertIs(tst.right, r)
@@ -69,7 +67,7 @@ class test_Vertex(unittest.TestCase):
         r   = search.Node()
         err = search.Node()
 
-        swp = search.Vertex(l, r, 6.18)
+        swp = search.Edge(l, r, 6.18)
 
         # left-to-right
         tst = swp.traverse(l)
