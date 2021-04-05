@@ -123,3 +123,42 @@ class test_Node2D(unittest.TestCase):
         # test new properties
         self.assertEqual(-1, tst.x)
         self.assertEqual(-1, tst.y)
+
+class testGraph2D(unittest.TestCase):
+
+    def test_constructor_default(self):
+        tst = search.Graph2D(3, 3)
+
+        # parent
+        self.assertEquals(len(tst.contents), 9)
+
+        # self
+        self.assertEquals(tst.width,  3)
+        self.assertEquals(tst.height, 3)
+
+        self.assertEquals(len(tst.grid), 3)
+        self.assertEquals(len(tst.grid[0]), 3)
+        self.assertEquals(len(tst.grid[1]), 3)
+        self.assertEquals(len(tst.grid[2]), 3)
+
+        # okay, the connections for link cardinals?
+        self.assertTrue(tst.grid[0][0].hasNeighbor(tst.grid[0][1]))
+        self.assertTrue(tst.grid[0][0].hasNeighbor(tst.grid[1][0]))
+
+        self.assertTrue(tst.grid[1][0].hasNeighbor(tst.grid[0][0]))
+        self.assertTrue(tst.grid[1][0].hasNeighbor(tst.grid[1][1]))
+        self.assertTrue(tst.grid[1][0].hasNeighbor(tst.grid[2][0]))
+
+        self.assertTrue(tst.grid[2][0].hasNeighbor(tst.grid[1][0]))
+        self.assertTrue(tst.grid[2][0].hasNeighbor(tst.grid[2][1]))
+
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[0][1]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[1][0]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[1][2]))
+        self.assertTrue(tst.grid[1][1].hasNeighbor(tst.grid[2][1]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[0][0]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[0][2]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[1][1]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[2][0]))
+        self.assertFalse(tst.grid[1][1].hasNeighbor(tst.grid[2][2]))
+        # I got bored of writing, call me when it breaks.

@@ -165,10 +165,10 @@ class Graph2D(Graph):
                 if (y > 0):
                     self.grid[x][y].addNeighbor(self.grid[x][y-1])
                 # east
-                if (x < width - 1):
+                if (x < self.width - 1):
                     self.grid[x][y].addNeighbor(self.grid[x+1][y])
                 # south
-                if (y < height - 1):
+                if (y < self.height - 1):
                     self.grid[x][y].addNeighbor(self.grid[x][y+1])
     
     def connectDiagonals(self):
@@ -182,13 +182,13 @@ class Graph2D(Graph):
                 if ((x > 0) and (y > 0)):
                     self.grid[x][y].addNeighbor(self.grid[x-1][y-1])
                 # northeast
-                if ((x < width - 1) and (y > 0)):
+                if ((x < self.width - 1) and (y > 0)):
                     self.grid[x][y].addNeighbor(self.grid[x+1][y-1])
                 # southwest
-                if ((x > 0) and (y < height - 1)):
+                if ((x > 0) and (y < self.height - 1)):
                     self.grid[x][y].addNeighbor(self.grid[x-1][y+1])
                 # southeast
-                if ((x < width - 1) and (y < height - 1)):
+                if ((x < self.width - 1) and (y < self.height - 1)):
                     self.grid[x][y].addNeighbor(self.grid[x+1][y+1])
 
     def resetSearch(self):
