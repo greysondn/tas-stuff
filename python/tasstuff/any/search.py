@@ -117,8 +117,6 @@ class Path():
         
         return not self.failed
 
-
-
 class Graph():
     # very barebones graph
     def __init__(self):
