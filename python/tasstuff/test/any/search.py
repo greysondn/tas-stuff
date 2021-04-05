@@ -38,6 +38,16 @@ class test_Node(unittest.TestCase):
         self.assertIs(mir.edges[0].right, tst)
         self.assertEquals(mir.edges[0].cost, 1.0)
         self.assertEquals(len(mir.edges), 1)
+    
+    def test_hasNeighbor(self):
+        tst = search.Node()
+        nbr = search.Node()
+        nop = search.Node()
+
+        tst.addNeighbor(nbr, 1.0, False)
+        
+        self.assertTrue(tst.hasNeighbor(nbr))
+        self.assertFalse(tst.hasNeighbor(nop))
 
 class test_Edge(unittest.TestCase):
 
