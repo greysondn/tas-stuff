@@ -12,23 +12,23 @@ class Node():
         self.neighbors = []
 
     def addNeighbor(self, neighbor, cost=1.0, mirror=True):
-        swp = Vertex(self, neighbor, float(cost))
+        swp = Edge(self, neighbor, float(cost))
         self.neighbors.append(swp)
 
         if (mirror):
             neighbor.addNeighbor(self, cost, False)
 
     
-class Vertex():
+class Edge():
     """
     A single connection in a search graph
     """
     def __init__(self, left, right, cost=1.0):
-        """Creates a vertex.
+        """Creates a link between two nodes.
 
         "Left" and "right" are arbitrary names here. They don't indicate
         anything meaningful, they just give us a consistent way to tell one Node
-        from the other in a vertex.
+        from the other in a connection.
 
         Args:
             left (Node):
@@ -36,7 +36,7 @@ class Vertex():
             right (Node):
                 One of the two Nodes to connect. Defaults to None.
             cost (float, optional):
-                How much it "costs" to traverse this vertex. Typically this is
+                How much it "costs" to traverse this link. Typically this is
                 the actual distance between nodes, or the resource cost to move
                 between them. Defaults to 1.0.
         """
@@ -52,7 +52,7 @@ class Vertex():
         elif (start is self.right):
             end = self.left
         else:
-            raise ValueError("No match for start in vertex!")
+            raise ValueError("No match for start in edge!")
         
         return end, self.cost
 
