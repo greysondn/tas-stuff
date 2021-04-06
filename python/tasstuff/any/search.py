@@ -3,6 +3,43 @@ FLAG_TARGET  = "flag.target"
 FLAG_CHECKED = "flag.checked"
 
 # "and all the rest"
+class Edge():
+    """
+    A single connection in a search graph
+    """
+    def __init__(self, left, right, cost=1.0):
+        """Creates a link between two nodes.
+
+        "Left" and "right" are arbitrary names here. They don't indicate
+        anything meaningful, they just give us a consistent way to tell one Node
+        from the other in a connection.
+
+        Args:
+            left (Node):
+                One of the two Nodes to connect. Defaults to None.
+            right (Node):
+                One of the two Nodes to connect. Defaults to None.
+            cost (float, optional):
+                How much it "costs" to traverse this link. Typically this is
+                the actual distance between nodes, or the resource cost to move
+                between them. Defaults to 1.0.
+        """
+        self.left  = left
+        self.right = right
+        self.cost  = cost
+    
+    def traverse(self, start):
+        end = None
+        
+        if (start is self.left):
+            end = self.right
+        elif (start is self.right):
+            end = self.left
+        else:
+            raise ValueError("No match for start in edge!")
+        
+        return end, self.cost
+
 class Node():
     """
     A single location in a search graph
@@ -70,44 +107,6 @@ class Node():
 
     def resetFlags(self):
         self.flags = []
-
-    
-class Edge():
-    """
-    A single connection in a search graph
-    """
-    def __init__(self, left, right, cost=1.0):
-        """Creates a link between two nodes.
-
-        "Left" and "right" are arbitrary names here. They don't indicate
-        anything meaningful, they just give us a consistent way to tell one Node
-        from the other in a connection.
-
-        Args:
-            left (Node):
-                One of the two Nodes to connect. Defaults to None.
-            right (Node):
-                One of the two Nodes to connect. Defaults to None.
-            cost (float, optional):
-                How much it "costs" to traverse this link. Typically this is
-                the actual distance between nodes, or the resource cost to move
-                between them. Defaults to 1.0.
-        """
-        self.left  = left
-        self.right = right
-        self.cost  = cost
-    
-    def traverse(self, start):
-        end = None
-        
-        if (start is self.left):
-            end = self.right
-        elif (start is self.right):
-            end = self.left
-        else:
-            raise ValueError("No match for start in edge!")
-        
-        return end, self.cost
 
 class Path():
     # represents a series of nodes that are connected, start to end
