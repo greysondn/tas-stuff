@@ -226,7 +226,7 @@ class Graph2D(Graph):
             xSwp = []
             for y in range(height):
                 # need to work with the node just a bit as we add it
-                nSwp = Node()
+                nSwp = Node2D()
 
                 # make node aware of its own position
                 nSwp.x = x

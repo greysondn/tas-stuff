@@ -352,3 +352,17 @@ class testGraph2D(unittest.TestCase):
 
         self.assertEquals(len(tst.grid), 1)
         self.assertEquals(len(tst.grid[0]), 2)
+
+    def test_constructor_correct_node(self):
+        # it was discovered that I was using Node instead of Node2D.
+        tst = search.Graph2D(2, 2)
+
+        # we just check their properties
+        self.assertEquals(0, tst.grid[0][0].x)
+        self.assertEquals(0, tst.grid[0][0].y)
+        self.assertEquals(0, tst.grid[0][1].x)
+        self.assertEquals(1, tst.grid[0][1].y)
+        self.assertEquals(1, tst.grid[1][0].x)
+        self.assertEquals(0, tst.grid[1][0].y)
+        self.assertEquals(1, tst.grid[1][1].x)
+        self.assertEquals(1, tst.grid[1][1].y)
