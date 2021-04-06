@@ -2,7 +2,6 @@ import math
 import tasstuff.snes.mario_paint.constants as mp
 
 from PIL import Image
-from tasstuff.any.search import Node2D  as SearchNode
 from tasstuff.any.search import Graph2D as SearchMesh
 
 # My column width is set at 80, if you'd like to display this without wrapping.
