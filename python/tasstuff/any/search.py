@@ -7,13 +7,20 @@ class Node():
     """
     A single location in a search graph
     """
-    def __init__(self):
+    def __init__(self, edgeClass=Edge):
+        """Creates simple Node.
+
+        Args:
+            edgeClass (Class(Edge), optional): Class to use when creating edges
+            for this node. Defaults to Edge.
+        """
         self.flags = []
         self.edges = []
         self.cost  = 0
+        self._edgeClass = edgeClass
 
     def addNeighbor(self, neighbor, cost=1.0, mirror=True):
-        swp = Edge(self, neighbor, float(cost))
+        swp = self._edgeClass(self, neighbor, float(cost))
         self.edges.append(swp)
 
         if (mirror):
@@ -27,6 +34,14 @@ class Node():
                 ret = True
         
         return ret
+    
+    def removeNeighbor(self, neighbor, mirror=True):
+        edge = getConnectingEdge(neighbor)
+
+        if (edge1 is not None):
+            self.edges.remove(edge1)
+        if (mirror):
+                neighbor.removeNeighbor(self, False)
 
     def getConnectingEdge(self, neighbor):
         ret = None
@@ -215,7 +230,7 @@ class Graph2D(Graph):
                 Which node class to use when building. Must be a child of
                 Node2D. Defaults to Node2D.
         """
-        
+
         # parent constructor first
         super().__init__()
 
