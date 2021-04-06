@@ -271,9 +271,9 @@ class test_Graph(unittest.TestCase):
 
         # A
         # Dist F < Dist D
-        nodeD.addFlag("test")
-        nodeF.addFlag("test")
-        chk = tst.findClosestFlaggedTo("test", nodeA)
+        nodeD.addFlag("___test")
+        nodeF.addFlag("___test")
+        chk = tst.findClosestFlaggedTo("___test", nodeA)
         self.assertIs(nodeF, chk)
 
         # deliberately impossible
