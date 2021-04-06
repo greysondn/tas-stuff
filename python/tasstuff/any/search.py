@@ -39,6 +39,17 @@ class Edge():
             raise ValueError("No match for start in edge!")
         
         return end, self.cost
+    
+    def canTraverse(self, start):
+        """Returns whether or not this is traversable. Inteded for override.
+
+        Args:
+            start (Node): node we're starting at
+
+        Returns:
+            Bool: whether it's traversable. Default version just returns True.
+        """
+        return True
 
 class Node():
     """
@@ -141,6 +152,30 @@ class Graph():
             node.removeFlag("___checked")
             node.cost = float("inf")
 
+    def isolateNode(self, node):
+        """Destroys all edges leading to and from the indicated node.
+        
+        Does not remove it from the graph.
+
+        Args:
+            node (Node): node to isolate
+        """
+        for other in self.contents:
+            other.removeNeighbor(node)
+        
+    def removeNode(self, node):
+        """Removes node completely from the graph.
+
+        Args:
+            node (Node): node to remove
+        """
+        self.isolateNode(node)
+        self.contents.remove(node)
+
+    def addNode(self, node):
+        if (node not in self.contents):
+            self.contents.append(node)
+
     def findClosestFlaggedTo(self, flag, node):
         ret = None
 
@@ -166,15 +201,16 @@ class Graph():
                 if not(swp.hasFlag("___checked")):
                     # peek in on the neighbors
                     for edge in swp.edges:
-                        # update costs
-                        costGuess = swp.cost + edge.cost
-                        nxt = edge.traverse(swp)[0]
-                        if (nxt.cost > costGuess):
-                            nxt.cost = costGuess
-                
-                        # add any unchecked neighbors to the search array
-                        if (not nxt.hasFlag("___checked")):
-                            toSearch.append(nxt)
+                        if edge.canTraverse(swp):
+                            # update costs
+                            costGuess = swp.cost + edge.cost
+                            nxt = edge.traverse(swp)[0]
+                            if (nxt.cost > costGuess):
+                                nxt.cost = costGuess
+                    
+                            # add any unchecked neighbors to the search array
+                            if (not nxt.hasFlag("___checked")):
+                                toSearch.append(nxt)
                     
                     # give swap the checked flag so it won't be checked twice
                     swp.addFlag("___checked")
