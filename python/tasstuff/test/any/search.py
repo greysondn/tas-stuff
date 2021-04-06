@@ -95,8 +95,6 @@ class test_Node(unittest.TestCase):
         tst.resetFlags()
         self.assertFalse(tst.hasFlag("test"))
 
-
-
 class test_Edge(unittest.TestCase):
 
     def test_constructor_default(self):
