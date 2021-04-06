@@ -175,7 +175,7 @@ class Graph():
                     stopSearching = True
                     ret = None
 
-        return ret 
+        return ret
 
 class Node2D(Node):
     """
