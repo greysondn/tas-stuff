@@ -194,7 +194,7 @@ class Graph2D(Graph):
     A basic search graph. Has some extension to help with 2 dimensional work.
     """
     def __init__(self, width, height, cardinalNeighbors=True, 
-                 diagonalNeighbors=False):
+                 diagonalNeighbors=False, nodeClass=Node2D):
         """Create a simple 2D search graph.
 
         The operating assumption is that this maps to some kind of 2D grid map -
@@ -211,7 +211,11 @@ class Graph2D(Graph):
             diagonalNeighbors (bool, optional):
                 Whether to link the northeast, northwest, southeast, and
                 southwest nodes to each other. Defaults to False.
-        """        
+            nodeClass(class, optional):
+                Which node class to use when building. Must be a child of
+                Node2D. Defaults to Node2D.
+        """
+        
         # parent constructor first
         super().__init__()
 
@@ -226,7 +230,7 @@ class Graph2D(Graph):
             xSwp = []
             for y in range(height):
                 # need to work with the node just a bit as we add it
-                nSwp = Node2D()
+                nSwp = nodeClass()
 
                 # make node aware of its own position
                 nSwp.x = x
