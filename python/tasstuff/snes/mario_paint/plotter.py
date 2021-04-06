@@ -2,7 +2,7 @@ import math
 import tasstuff.snes.mario_paint.constants as mp
 
 from PIL import Image
-from tasstuff.any.search import Graph2D as SearchMesh
+from tasstuff.any.search import Graph2D
 
 # My column width is set at 80, if you'd like to display this without wrapping.
 # ~greysondn
@@ -252,7 +252,7 @@ class Plotter:
         width  = im.size[0]
         height = im.size[1]
         
-        sGrid = SearchMesh(width, height)
+        sGrid = Graph2D(width, height)
         
         # have to set targets in the grid
         for x in range(width):
