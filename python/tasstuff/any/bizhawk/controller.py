@@ -139,10 +139,10 @@ class SnesMouse(InputGroup):
     def __init__(self, name="SNES Mouse"):
         super().__init__(name)
 
-        self.x = AnalogInput("Mouse X", -127, 127)
-        self.y = AnalogInput("Mouse Y", -127, 127)
-        self.l = Button("Mouse L", "l")
-        self.r = Button("Mouse R", "r")
+        self.x = AnalogInput(f"{name}_X", -127, 127)
+        self.y = AnalogInput(f"{name}_Y", -127, 127)
+        self.l = Button(f"{name}_L", "l")
+        self.r = Button(f"{name}_R", "r")
 
         self.add(self.x)
         self.add(self.y)
@@ -160,3 +160,41 @@ class SnesMouse(InputGroup):
 # snes inputs
 #    | mouse        | controller
 # |rP|   -2,    4,lr|UDLRsSYBXAlr|
+class SnesController(InputGroup):
+    def __init__(self, name="SNES Controller"):
+        super().__init__(name)
+
+        self.up     = Button(   f"{name}_up",  "U")
+        self.down   = Button( f"{name}_down",  "D")
+        self.left   = Button( f"{name}_left",  "L")
+        self.right  = Button(f"{name}_right", "R")
+
+        self.select = Button(f"{name}_select", "s")
+        self.start  = Button( f"{name}_start", "S")
+
+        self.y      = Button(f"{name}_y",  "Y")
+        self.b      = Button(f"{name}_b",  "B")
+        self.x      = Button(f"{name}_x",  "X")
+        self.a      = Button(f"{name}_a",  "A")
+        self.l      = Button(f"{name}_l",  "l")
+        self.r      = Button(f"{name}_r",  "r")
+
+        self.add(self.up)
+        self.add(self.down)
+        self.add(self.left)
+        self.add(self.right)
+        self.add(self.select)
+        self.add(self.start)
+        self.add(self.y)
+        self.add(self.b)
+        self.add(self.x)
+        self.add(self.a)
+        self.add(self.l)
+        self.add(self.r) 
+    
+    def __repr__(self):
+        ret = ""
+        ret = ret + f"{self.up}{self.down}{self.left}{self.right}"
+        ret = ret + f"{self.select}{self.start}"
+        ret = ret + f"{self.y}{self.b}{self.x}{self.a}{self.l}{self.r}"
+        return ret

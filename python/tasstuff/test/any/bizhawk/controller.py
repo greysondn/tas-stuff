@@ -268,3 +268,28 @@ class Test_SnesMouse(unittest.TestCase):
         tst.r.press()
 
         self.assertEqual(str(tst), "   -2,    3,lr")
+
+class Test_SnesController(unittest.TestCase):
+    # still not testing constructors, you know.
+    def test_repr(self):
+        tst = controller.SnesController()
+
+        # this is actually strictly defined so...
+        # unpressed
+        self.assertEqual(str(tst), "............")
+
+        # pressed
+        tst.up.press()
+        tst.down.press()
+        tst.left.press()
+        tst.right.press()
+        tst.select.press()
+        tst.start.press()
+        tst.y.press()
+        tst.b.press()
+        tst.x.press()
+        tst.a.press()
+        tst.l.press()
+        tst.r.press()
+
+        self.assertEqual(str(tst), "UDLRsSYBXAlr")
