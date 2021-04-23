@@ -2,6 +2,81 @@ import unittest
 
 import tasstuff.any.bizhawk.controller as controller
 
+class Test_Input(unittest.TestCase):
+    # there are no default args for constructor
+
+    def test_constructor_args(self):
+        tst = controller.Input("test")
+
+        self.assertEqual(tst.name, "test")
+        self.assertEqual(tst.held, False)
+
+    def test_reset(self):
+        # it does nothing. Just run it to make the thing happy.
+        tst = controller.Input("test")
+
+        tst.reset()
+
+    def test_hold(self):
+        tst = controller.Input("test")
+
+        tst.hold()
+
+        self.assertEqual(tst.held, True)
+    
+    def test_release(self):
+        tst = controller.Input("test")
+
+        tst.hold()
+        tst.release()
+
+        self.assertEqual(tst.held, False)
+
+    def test_update(self):
+        tst = controller.Input("test")
+
+        # there's actually no output specific here
+        # just run both versions of update so it's covered
+        tst.update()
+        tst.hold()
+        tst.update()
+        tst.release()
+        tst.update()
+
+class Test_InputGroup(unittest.TestCase):
+
+    def create_group(self):
+        ret = controller.InputGroup("test")
+        but = controller.Input("test")
+        ret.add(but)
+
+        return ret
+
+    # there is no defaulted constructor
+
+    def test_constructor_args(self):
+        tst = self.create_group()
+
+        # the test group has a single child
+        self.assertEqual(len(tst.children), 1)
+
+    def test_add(self):
+        tst = self.create_group()
+
+        but = controller.Input("test")
+        tst.add(but)
+
+        self.assertIs(but, tst.children[1])
+
+    # the rest of this I'm just running to make happy
+    def test_lazy(self):
+        tst = self.create_group()
+
+        tst.reset()
+        tst.update()
+        tst.hold()
+        tst.release()
+
 class Test_Button(unittest.TestCase):
 
     def test_constructor_default(self):
