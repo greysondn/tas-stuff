@@ -122,11 +122,6 @@ class Joystick(InputGroup):
         self.x.press(x)
         self.y.press(y)
 
-# snes inputs
-#    | mouse        | controller
-# |rP|   -2,    4,lr|UDLRsSYBXAlr|
-
-
 class SnesConsole(InputGroup):
     def __init__(self, name="SNES Console"):
         super().__init__(name)
@@ -139,4 +134,29 @@ class SnesConsole(InputGroup):
     
     def __repr__(self):
         return (str(self.reset) + str(self.power))
-        
+
+class SnesMouse(InputGroup):
+    def __init__(self, name="SNES Mouse"):
+        super().__init__(name)
+
+        self.x = AnalogInput("Mouse X", -127, 127)
+        self.y = AnalogInput("Mouse Y", -127, 127)
+        self.l = Button("Mouse L", "l")
+        self.r = Button("Mouse R", "r")
+
+        self.add(self.x)
+        self.add(self.y)
+        self.add(self.l)
+        self.add(self.r)
+    
+    def __repr__(self):
+        ret = ""
+        ret = ret + str(int(self.x.current)).rjust(5, " ") + ","
+        ret = ret + str(int(self.y.current)).rjust(5, " ") + ","
+        ret = ret + str(self.l)
+        ret = ret + str(self.r)
+        return ret
+
+# snes inputs
+#    | mouse        | controller
+# |rP|   -2,    4,lr|UDLRsSYBXAlr|
