@@ -82,14 +82,6 @@ class Node():
                 ret = True
         
         return ret
-    
-    def removeNeighbor(self, neighbor, mirror=True):
-        edge = getConnectingEdge(neighbor)
-
-        if (edge1 is not None):
-            self.edges.remove(edge1)
-        if (mirror):
-                neighbor.removeNeighbor(self, False)
 
     def getConnectingEdge(self, neighbor):
         ret = None
@@ -100,6 +92,14 @@ class Node():
 
         return ret
     
+    def removeNeighbor(self, neighbor, mirror=True):
+        edge = self.getConnectingEdge(neighbor)
+
+        if (edge is not None):
+            self.edges.remove(edge)
+        if (mirror):
+                neighbor.removeNeighbor(self, False)
+
     def addFlag(self, flag):
         if (flag not in self.flags):
             self.flags.append(flag)

@@ -9,3 +9,6 @@ CANVAS_MIN_X =   4
 CANVAS_MAX_X = 251
 CANVAS_MIN_Y =  28
 CANVAS_MAX_Y = 195
+
+SCREEN_TITLE  = "___title"
+SCREEN_CANVAS = "___canvas"

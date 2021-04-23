@@ -2,7 +2,37 @@ import math
 import tasstuff.snes.mario_paint.constants as mp
 
 from PIL import Image
+from tasstuff.any.search import Graph
 from tasstuff.any.search import Graph2D
+from tasstuff.any.search import Node2D
+from tasstuff.any.search import Edge
+
+# define edges for Mario Paint
+class MPaintEdge(Edge):
+    def __init__(self, left, right):
+        # parent
+        super().__init__(left, right)
+
+# define a node for Mario Paint
+class MPaintNode(Node2D):
+    def __init__(self):
+        # parent
+        super().__init__(MPaintEdge)
+
+        # which screen/dialogue/etc this node is from
+        self.screen = "UNSET"
+
+# define a graph for Mario Paint.
+class MPaintGraph(Graph):
+    def __init__(self):
+        # parent
+        super().__init__()
+
+        # the individual screens
+        # for now, I'm ignoring the offscreen portion.
+
+
+
 
 # My column width is set at 80, if you'd like to display this without wrapping.
 # ~greysondn

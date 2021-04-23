@@ -95,6 +95,29 @@ class test_Node(unittest.TestCase):
         tst.resetFlags()
         self.assertFalse(tst.hasFlag("test"))
 
+
+    def test_removeNeighbor(self):
+        tst_a = search.Node()
+        tst_b = search.Node()
+        tst_c = search.Node()
+        tst_d = search.Node()
+
+        tst_a.addNeighbor(tst_b)
+        tst_c.addNeighbor(tst_d)
+
+
+        # actual test - mirrored
+        tst_a.removeNeighbor(tst_b)
+
+        self.assertFalse(tst_a.hasNeighbor(tst_b))
+        self.assertFalse(tst_b.hasNeighbor(tst_b))
+
+        # actual test - non-mirrored
+        tst_c.removeNeighbor(tst_d, False)
+
+        self.assertFalse(tst_c.hasNeighbor(tst_d))
+        self.assertTrue(tst_d.hasNeighbor(tst_c))
+
 class test_Edge(unittest.TestCase):
 
     def test_constructor_default(self):
