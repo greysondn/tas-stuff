@@ -216,3 +216,23 @@ class Test_AnalogInput(unittest.TestCase):
         tst.press(6.28)
 
         self.assertEqual(str(tst), "6.28")
+
+class Test_Joystick(unittest.TestCase):
+    # there's not really anything to test in the constructor
+    def test_constructor_lazy(self):
+        controller.Joystick("test", -10, 10, -10, 10)
+    
+    def test_press(self):
+        tst = controller.Joystick("test", -10, 10, -10, 10)
+
+        tst.press(-3, 3)
+
+        self.assertEqual(tst.x.current, -3)
+        self.assertEqual(tst.y.current,  3)
+    
+    def test_repr(self):
+        tst = controller.Joystick("test", -10, 10, -10, 10)
+
+        tst.press(-4, 5)
+
+        self.assertEqual(str(tst), "-4.0,5.0")

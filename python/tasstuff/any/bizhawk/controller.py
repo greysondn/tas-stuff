@@ -116,4 +116,8 @@ class Joystick(InputGroup):
         self.add(self.y)
     
     def __repr__(self):
-        return f"{self.x.current}, {self.y.current}"
+        return f"{self.x.current},{self.y.current}"
+    
+    def press(self, x, y):
+        self.x.press(x)
+        self.y.press(y)
