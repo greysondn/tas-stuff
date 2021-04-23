@@ -121,3 +121,22 @@ class Joystick(InputGroup):
     def press(self, x, y):
         self.x.press(x)
         self.y.press(y)
+
+# snes inputs
+#    | mouse        | controller
+# |rP|   -2,    4,lr|UDLRsSYBXAlr|
+
+
+class SnesConsole(InputGroup):
+    def __init__(self, name="SNES Console"):
+        super().__init__(name)
+
+        self.reset = Button("Reset", "r")
+        self.power = Button("Power", "P")
+
+        self.add(self.reset)
+        self.add(self.power)
+    
+    def __repr__(self):
+        return (str(self.reset) + str(self.power))
+        

@@ -236,3 +236,18 @@ class Test_Joystick(unittest.TestCase):
         tst.press(-4, 5)
 
         self.assertEqual(str(tst), "-4.0,5.0")
+
+class Test_SnesConsole(unittest.TestCase):
+    # still not testing constructors, just going to jump to the next thing
+    def test_repr(self):
+        tst = controller.SnesConsole()
+
+        # this is actually strictly defined so
+        # unpressed
+        self.assertEqual(str(tst), "..")
+
+        # pressed
+        tst.power.press()
+        tst.reset.press()
+
+        self.assertEqual(str(tst), "rP")
