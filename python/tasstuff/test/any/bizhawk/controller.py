@@ -242,7 +242,7 @@ class Test_Joystick(unittest.TestCase):
         tst = controller.Joystick("test", -10, 10, -10, 10)
 
         with self.assertRaises(NotImplementedError):
-             tst.fromMneumonic("the input here is irrelevant due to error")
+             tst.fromMnemonic("the input here is irrelevant due to error")
 
 class Test_SnesConsole(unittest.TestCase):
     # still not testing constructors, just going to jump to the next thing
