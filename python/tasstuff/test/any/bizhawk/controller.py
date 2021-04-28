@@ -293,3 +293,35 @@ class Test_SnesController(unittest.TestCase):
         tst.r.press()
 
         self.assertEqual(str(tst), "UDLRsSYBXAlr")
+
+class Test_SnesMarioPaintControllerGroup(unittest.TestCase):
+    # won't test this constructor either
+    def test_repr(self):
+        tst = controller.SnesPreset_MarioPaint()
+
+        # unpressed
+        self.assertEqual(str(tst), "|..|    0,    0,..|............|")
+
+        # pressed
+        tst.power.press()
+        tst.reset.press()
+
+        tst.mL.press()
+        tst.mR.press()
+        tst.mX.press(-4)
+        tst.mY.press(8)
+
+        tst.up.press()
+        tst.down.press()
+        tst.left.press()
+        tst.right.press()
+        tst.select.press()
+        tst.start.press()
+        tst.y.press()
+        tst.b.press()
+        tst.x.press()
+        tst.a.press()
+        tst.l.press()
+        tst.r.press()
+
+        self.assertEqual(str(tst), "|rP|   -4,    8,lr|UDLRsSYBXAlr|")

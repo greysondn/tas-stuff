@@ -284,10 +284,10 @@ class test_Graph(unittest.TestCase):
         tst = self.build_common_graph()
 
         nodeA = tst.contents[0]
-        nodeB = tst.contents[1]
-        nodeC = tst.contents[2]
+        # nodeB = tst.contents[1]
+        # nodeC = tst.contents[2]
         nodeD = tst.contents[3]
-        nodeE = tst.contents[4]
+        # nodeE = tst.contents[4]
         nodeF = tst.contents[5]
 
         # A, D, and F are corners

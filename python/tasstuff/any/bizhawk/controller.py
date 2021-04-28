@@ -157,9 +157,6 @@ class SnesMouse(InputGroup):
         ret = ret + str(self.r)
         return ret
 
-# snes inputs
-#    | mouse        | controller
-# |rP|   -2,    4,lr|UDLRsSYBXAlr|
 class SnesController(InputGroup):
     def __init__(self, name="SNES Controller"):
         super().__init__(name)
@@ -198,3 +195,50 @@ class SnesController(InputGroup):
         ret = ret + f"{self.select}{self.start}"
         ret = ret + f"{self.y}{self.b}{self.x}{self.a}{self.l}{self.r}"
         return ret
+
+# specifically, the controller group needed for mario paint
+class SnesPreset_MarioPaint(InputGroup):
+    def __init__(self, name="Mario Paint Controls"):
+        super().__init__(name)
+
+        self.console = SnesConsole()
+        self.p1      = SnesMouse("Player 1")
+        self.p2      = SnesController("Player 2")
+
+        self.add(self.console)
+        self.add(self.p1)
+        self.add(self.p2)
+
+        # the nouse needs bounds tweaked specifically for Mario Paint
+        self.p1.x.max =  10
+        self.p1.x.min = -10
+        self.p1.y.max =  10
+        self.p1.y.min = -10
+
+
+        # and now for the misery
+        # we alias an insane number of properties right here
+        self.power = self.console.power
+        self.reset = self.console.reset
+
+        self.mL = self.p1.l
+        self.mR = self.p1.r
+        self.mX = self.p1.x
+        self.mY = self.p1.y
+
+        self.up     = self.p2.up
+        self.down   = self.p2.down
+        self.left   = self.p2.left
+        self.right  = self.p2.right
+        self.select = self.p2.select
+        self.start  = self.p2.start
+        self.y      = self.p2.y
+        self.b      = self.p2.b
+        self.x      = self.p2.x
+        self.a      = self.p2.a
+        self.l      = self.p2.l
+        self.r      = self.p2.r
+
+    # I think this part is cool, though
+    def __repr__(self):
+        return f"|{self.console}|{self.p1}|{self.p2}|"
