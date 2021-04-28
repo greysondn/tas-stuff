@@ -237,6 +237,13 @@ class Test_Joystick(unittest.TestCase):
 
         self.assertEqual(str(tst), "-4.0,5.0")
 
+    def test_fromMnemonic(self):
+        # literally just to raise the error, honestly, for coverage sake
+        tst = controller.Joystick("test", -10, 10, -10, 10)
+
+        with self.assertRaises(NotImplementedError):
+             tst.fromMneumonic("the input here is irrelevant due to error")
+
 class Test_SnesConsole(unittest.TestCase):
     # still not testing constructors, just going to jump to the next thing
     def test_repr(self):
@@ -248,7 +255,7 @@ class Test_SnesConsole(unittest.TestCase):
 
         # pressed
         tst.power.press()
-        tst.reset.press()
+        tst.resetBttn.press()
 
         self.assertEqual(str(tst), "rP")
 
@@ -304,7 +311,7 @@ class Test_SnesMarioPaintControllerGroup(unittest.TestCase):
 
         # pressed
         tst.power.press()
-        tst.reset.press()
+        tst.resetBttn.press()
 
         tst.mL.press()
         tst.mR.press()
@@ -325,3 +332,22 @@ class Test_SnesMarioPaintControllerGroup(unittest.TestCase):
         tst.r.press()
 
         self.assertEqual(str(tst), "|rP|   -4,    8,lr|UDLRsSYBXAlr|")
+
+    def test_fromMnemonic(self):
+        # the general premise for this test is that if I use the default
+        # symbols, then the mnemonic I give it should match repr(self) after.
+        #
+        # this may be a faulty premise.
+        tst = controller.SnesPreset_MarioPaint()
+
+        m1 = "|rP|   -4,    8,lr|UDLRsSYBXAlr|"
+        tst.fromMnemonic(m1)
+        self.assertEqual(str(tst), m1)
+
+        m2 = "|.P|    0,    0,l.|UD.Rs.YB.Al.|"
+        tst.fromMnemonic(m2)
+        self.assertEqual(str(tst), m2)
+
+        m3 = "|..|    0,    0,..|............|"
+        tst.fromMnemonic(m3)
+        self.assertEqual(str(tst), m3)

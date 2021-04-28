@@ -16,6 +16,25 @@ class Input():
     def release(self):
         self.held = False
 
+    def fromMneumonic(self, mneumonic):
+        # from a bizhawk mneumonic
+        #
+        # this assumes that:
+        #
+        # - singular inputs will override this to handle button presses
+        #
+        # - small input groups will override this to read their own mneumonics
+        #   without bars surrounding it
+        #
+        # - full inputs will override this to read the mneumonics with bars in
+        #   and around them
+        # 
+        # Bizhawk *technically* doesn't require specific characters for
+        # mneumonics according to its documentation. I've not tested this, but
+        # it is something to be aware of as overrides are written or if you try
+        # to analyze them 
+        self.release()
+
 class InputGroup(Input):
     def __init__(self, name):
         super().__init__(name)
@@ -45,7 +64,6 @@ class InputGroup(Input):
     
     def add(self, child):
         self.children.append(child)
-
 
 class Button(Input):
     def __init__(self, name, onString, offString="."):
@@ -77,6 +95,14 @@ class Button(Input):
 
         return ret
 
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        if ("." == mneumonic):
+            self.reset()
+        else:
+            self.press()
+
 class AnalogInput(Input):
     def __init__(self, name, minVal, maxVal, center = 0):
         super().__init__(name)
@@ -105,6 +131,11 @@ class AnalogInput(Input):
         
         self.current = float(val)
 
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        self.press(float(mneumonic))
+
 class Joystick(InputGroup):
     def __init__(self, name, minX, maxX, minY, maxY, centerX=0, centerY=0):
         super().__init__(name)
@@ -122,18 +153,30 @@ class Joystick(InputGroup):
         self.x.press(x)
         self.y.press(y)
 
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        raise NotImplementedError("No need for joysticks yet, so this isn't implemented, sorry!")
+
 class SnesConsole(InputGroup):
     def __init__(self, name="SNES Console"):
         super().__init__(name)
 
-        self.reset = Button("Reset", "r")
-        self.power = Button("Power", "P")
+        self.resetBttn = Button("Reset", "r")
+        self.power     = Button("Power", "P")
 
-        self.add(self.reset)
+        self.add(self.resetBttn)
         self.add(self.power)
     
     def __repr__(self):
-        return (str(self.reset) + str(self.power))
+        return (str(self.resetBttn) + str(self.power))
+
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        # buttons
+        self.resetBttn.fromMneumonic(mneumonic[0])
+        self.power.fromMneumonic(mneumonic[1])
 
 class SnesMouse(InputGroup):
     def __init__(self, name="SNES Mouse"):
@@ -156,6 +199,19 @@ class SnesMouse(InputGroup):
         ret = ret + str(self.l)
         ret = ret + str(self.r)
         return ret
+
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        msegs = mneumonic.split(",")
+
+        # analogs
+        self.x.fromMneumonic(msegs[0])
+        self.y.fromMneumonic(msegs[1])
+
+        # buttons
+        self.l.fromMneumonic(msegs[2][0])
+        self.r.fromMneumonic(msegs[2][1])
 
 class SnesController(InputGroup):
     def __init__(self, name="SNES Controller"):
@@ -196,6 +252,24 @@ class SnesController(InputGroup):
         ret = ret + f"{self.y}{self.b}{self.x}{self.a}{self.l}{self.r}"
         return ret
 
+    def fromMneumonic(self, mneumonic):
+        super().fromMneumonic(mneumonic)
+
+        # buttons, buttons, oh my the buttons
+        self.up.fromMneumonic(    mneumonic[ 0])
+        self.down.fromMneumonic(  mneumonic[ 1])
+        self.left.fromMneumonic(  mneumonic[ 2])
+        self.right.fromMneumonic( mneumonic[ 3])
+        self.select.fromMneumonic(mneumonic[ 4])
+        self.start.fromMneumonic( mneumonic[ 5])
+        self.y.fromMneumonic(     mneumonic[ 6])
+        self.b.fromMneumonic(     mneumonic[ 7])
+        self.x.fromMneumonic(     mneumonic[ 8])
+        self.a.fromMneumonic(     mneumonic[ 9])
+        self.l.fromMneumonic(     mneumonic[10])
+        self.r.fromMneumonic(     mneumonic[11])
+
+
 # specifically, the controller group needed for mario paint
 class SnesPreset_MarioPaint(InputGroup):
     def __init__(self, name="Mario Paint Controls"):
@@ -218,8 +292,8 @@ class SnesPreset_MarioPaint(InputGroup):
 
         # and now for the misery
         # we alias an insane number of properties right here
-        self.power = self.console.power
-        self.reset = self.console.reset
+        self.power     = self.console.power
+        self.resetBttn = self.console.resetBttn
 
         self.mL = self.p1.l
         self.mR = self.p1.r
@@ -238,6 +312,18 @@ class SnesPreset_MarioPaint(InputGroup):
         self.a      = self.p2.a
         self.l      = self.p2.l
         self.r      = self.p2.r
+    
+    # from a bizhawk mnemonic string, that is
+    def fromMnemonic(self, mnemonic):
+        super().fromMneumonic(mnemonic)
+        self.reset()
+        
+        mSegs = mnemonic.split("|")
+        
+        self.console.fromMneumonic(mSegs[1])
+        self.p1.fromMneumonic(     mSegs[2])
+        self.p2.fromMneumonic(     mSegs[3])
+
 
     # I think this part is cool, though
     def __repr__(self):
